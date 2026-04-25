@@ -1,0 +1,102 @@
+services:
+  # PHP Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        user: ${USER_NAME:-sammy}
+        uid: ${USER_ID:-1000}
+    image: secure-talent-app
+    container_name: secure-talent-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - secure-talent-network
+
+  # Nginx Web Service
+  web:
+    image: nginx:alpine
+    container_name: secure-talent-web
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8000}:80"
+    volumes:
+      - ./:/var/www
+      - ./.docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - secure-talent-network
+
+  # Database Service
+  db:
+    image: mysql:8.0
+    container_name: secure-talent-db
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-secure_talent}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_USER: ${DB_USERNAME:-secure_user}
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - secure-talent-network
+
+  # Redis Cache Service
+  redis:
+    image: redis:alpine
+    container_name: secure-talent-redis
+    restart: unless-stopped
+    networks:
+      - secure-talent-network
+
+  # Queue Worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        user: ${USER_NAME:-sammy}
+        uid: ${USER_ID:-1000}
+    container_name: secure-talent-worker
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    command: php artisan queue:work --timeout=60
+    depends_on:
+      - app
+      - redis
+    networks:
+      - secure-talent-network
+
+  # Scheduler
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        user: ${USER_NAME:-sammy}
+        uid: ${USER_ID:-1000}
+    container_name: secure-talent-scheduler
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    command: php artisan schedule:work
+    depends_on:
+      - app
+    networks:
+      - secure-talent-network
+
+networks:
+  secure-talent-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
