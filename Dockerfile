@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     locales \
     gnupg \
+    poppler-utils \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl
 
 # Install phpredis extension

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\App;
 
 class KanbanBoard extends Component
 {
+    public $jobOfferId = null;
+    public $selectedApplication = null;
+
     /**
      * Update the status of an application.
      */
@@ -31,14 +34,39 @@ class KanbanBoard extends Component
         ]);
     }
 
+    public function showApplication($id)
+    {
+        $this->selectedApplication = Application::with('candidateProfile')->findOrFail($id);
+    }
+
+    public function closeApplication()
+    {
+        $this->selectedApplication = null;
+    }
+
     public function render()
     {
-        $statuses = ['new', 'review', 'test', 'interview', 'hired', 'rejected'];
-        $applications = Application::with(['candidateProfile', 'jobOffer'])->get()->groupBy('status');
+        $statuses = ['new', 'review', 'test', 'interview', 'offer', 'hired', 'rejected'];
+        
+        $jobOffers = \App\Models\JobOffer::orderBy('created_at', 'desc')->get();
+        
+        // If no job offer selected, default to the first one
+        if (!$this->jobOfferId && $jobOffers->count() > 0) {
+            $this->jobOfferId = $jobOffers->first()->id;
+        }
+
+        $applicationsQuery = Application::with(['candidateProfile', 'jobOffer']);
+        
+        if ($this->jobOfferId) {
+            $applicationsQuery->where('job_offer_id', $this->jobOfferId);
+        }
+
+        $applications = $applicationsQuery->get()->groupBy('status');
 
         return view('livewire.kanban-board', [
             'statuses' => $statuses,
-            'applications' => $applications
+            'applications' => $applications,
+            'jobOffers' => $jobOffers
         ]);
     }
 }

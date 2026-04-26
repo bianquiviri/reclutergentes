@@ -128,22 +128,31 @@
                         </div>
                     </div>
 
-                    <div class="prose prose-sm dark:prose-invert max-w-none text-muted-foreground">
-                        <p class="whitespace-pre-line leading-relaxed">{{ $selectedOffer->getTranslation('description', app()->getLocale()) }}</p>
-                    </div>
+                    @if(!$showApplyForm)
+                        <div class="prose prose-sm dark:prose-invert max-w-none text-muted-foreground">
+                            <p class="whitespace-pre-line leading-relaxed">{{ $selectedOffer->getTranslation('description', app()->getLocale()) }}</p>
+                        </div>
+                    @else
+                        <div class="mt-4 border-t border-border pt-6">
+                            <h3 class="text-xl font-bold mb-4">Aplica ahora con tu CV</h3>
+                            @livewire('cv-uploader', ['jobOfferId' => $selectedOffer->id], key('cv-uploader-'.$selectedOffer->id))
+                        </div>
+                    @endif
                 </div>
 
                 <div class="px-6 py-5 border-t border-border flex justify-end gap-3 bg-surface">
                     <button wire:click="closeOffer" class="px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors border border-border hover:bg-muted" style="color:var(--color-foreground);">
                         Cerrar
                     </button>
-                    <!-- Redirect to login since this is public facing right now -->
-                    <a href="/login" class="btn-primary">
-                        Aplicar a esta vacante
-                        <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
+                    
+                    @if(!$showApplyForm)
+                        <button wire:click="$set('showApplyForm', true)" class="btn-primary">
+                            Aplicar a esta vacante
+                            <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
