@@ -1,61 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-background: oklch(0.98 0.01 260);
-  --color-foreground: oklch(0.2 0.02 232);
-  --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.2 0.02 232);
-  --color-popover: oklch(0.98 0.01 260);
-  --color-popover-foreground: oklch(0.2 0.02 232);
-  --color-primary: oklch(0.45 0.01 240);
-  --color-primary-foreground: oklch(0.98 0.01 260);
-  --color-secondary: oklch(0.45 0.01 210);
-  --color-secondary-foreground: oklch(0.98 0.01 240);
-  --color-muted: oklch(0.95 0.02 250);
-  --color-muted-foreground: oklch(0.45 0.02 233);
-  --color-accent: oklch(0.95 0.02 250);
-  --color-accent-foreground: oklch(0.2 0.02 232);
-  --color-destructive: oklch(0.5 0.05 350);
-  --color-destructive-foreground: oklch(0.98 0.01 260);
-  --color-border: oklch(0.45 0.02 233);
-  --color-input: oklch(0.45 0.02 233);
-  --color-ring: oklch(0.45 0.01 240);
-  --radius-sm: 0.125rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
+  /* ── Brand Palette ─────────────────────────────────────── */
+  --color-primary:           oklch(0.55 0.24 270);   /* vivid indigo/violet */
+  --color-primary-hover:     oklch(0.48 0.26 270);
+  --color-primary-foreground:oklch(0.99 0.00 270);
+  --color-primary-muted:     oklch(0.55 0.24 270 / 0.12);
+
+  --color-accent:            oklch(0.68 0.22 200);   /* electric teal */
+  --color-accent-foreground: oklch(0.12 0.02 200);
+
+  --color-success:           oklch(0.65 0.20 145);   /* emerald */
+  --color-warning:           oklch(0.78 0.18  75);   /* amber */
+  --color-danger:            oklch(0.58 0.24  25);   /* red */
+
+  /* ── Neutrals (dark mode base) ────────────────────────── */
+  --color-background:        oklch(0.11 0.01 260);
+  --color-surface:           oklch(0.14 0.015 260);
+  --color-card:              oklch(0.17 0.018 265);
+  --color-card-hover:        oklch(0.20 0.020 265);
+  --color-border:            oklch(0.26 0.015 265);
+  --color-border-subtle:     oklch(0.22 0.010 265);
+
+  --color-foreground:        oklch(0.96 0.005 260);
+  --color-muted-foreground:  oklch(0.62 0.012 265);
+
+  --color-input:             oklch(0.20 0.018 265);
+  --color-ring:              oklch(0.55 0.24 270 / 0.50);
+
+  /* Aliases kept for compatibility */
+  --color-popover:           var(--color-card);
+  --color-popover-foreground:var(--color-foreground);
+  --color-secondary:         oklch(0.22 0.02 265);
+  --color-secondary-foreground: oklch(0.85 0.01 265);
+  --color-muted:             oklch(0.20 0.015 265);
+  --color-destructive:       var(--color-danger);
+  --color-destructive-foreground: var(--color-primary-foreground);
+
+  /* ── Radius ────────────────────────────────────────────── */
+  --radius-sm:  0.375rem;
+  --radius-md:  0.625rem;
+  --radius-lg:  0.875rem;
+  --radius-xl:  1.25rem;
+  --radius-2xl: 1.75rem;
+
+  /* ── Font ──────────────────────────────────────────────── */
+  --font-sans: 'Inter', system-ui, sans-serif;
 }
 
+/* ══════════════════════════════════════════════════════════
+   Base
+══════════════════════════════════════════════════════════ */
 @layer base {
-  * {
-    @apply border-border;
-  }
+  *, *::before, *::after { @apply border-border; box-sizing: border-box; }
+
+  html { font-family: var(--font-sans); }
+
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
     font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-/* Custom Scrollbar for premium feel */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
+/* ══════════════════════════════════════════════════════════
+   Scrollbar
+══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  @apply bg-muted rounded-full;
+  background: oklch(0.30 0.015 265);
+  border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-muted-foreground/30;
+  background: oklch(0.55 0.24 270 / 0.60);
 }
 
-/* Kanban Board Animations */
+/* ══════════════════════════════════════════════════════════
+   Gradient helpers
+══════════════════════════════════════════════════════════ */
+.gradient-brand {
+  background: linear-gradient(135deg,
+    oklch(0.55 0.24 270) 0%,
+    oklch(0.55 0.22 230) 50%,
+    oklch(0.62 0.20 200) 100%);
+}
+
+.gradient-brand-text {
+  background: linear-gradient(90deg,
+    oklch(0.72 0.22 270),
+    oklch(0.68 0.22 200));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-glow {
+  background: radial-gradient(ellipse at top left,
+    oklch(0.55 0.24 270 / 0.18) 0%,
+    transparent 60%);
+}
+
+/* ══════════════════════════════════════════════════════════
+   Glassmorphism card
+══════════════════════════════════════════════════════════ */
+.glass-card {
+  background: oklch(0.17 0.018 265 / 0.80);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid oklch(0.28 0.020 265 / 0.70);
+}
+
+/* ══════════════════════════════════════════════════════════
+   Stat card accent strips
+══════════════════════════════════════════════════════════ */
+.stat-card-primary  { border-top: 3px solid oklch(0.55 0.24 270); }
+.stat-card-teal     { border-top: 3px solid oklch(0.68 0.22 200); }
+.stat-card-emerald  { border-top: 3px solid oklch(0.65 0.20 145); }
+
+/* ══════════════════════════════════════════════════════════
+   Nav item active / hover
+══════════════════════════════════════════════════════════ */
+.nav-item {
+  @apply flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200;
+  color: var(--color-muted-foreground);
+}
+.nav-item:hover {
+  background: oklch(0.55 0.24 270 / 0.10);
+  color: var(--color-foreground);
+}
+.nav-item.active {
+  background: oklch(0.55 0.24 270 / 0.18);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════════════
+   Buttons
+══════════════════════════════════════════════════════════ */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 shadow-lg;
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  box-shadow: 0 4px 20px oklch(0.55 0.24 270 / 0.35);
+}
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px oklch(0.55 0.24 270 / 0.45);
+}
+
+/* ══════════════════════════════════════════════════════════
+   Badge helpers
+══════════════════════════════════════════════════════════ */
+.badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+}
+.badge-primary  { background: oklch(0.55 0.24 270 / 0.18); color: oklch(0.72 0.22 270); }
+.badge-teal     { background: oklch(0.68 0.22 200 / 0.18); color: oklch(0.68 0.22 200); }
+.badge-emerald  { background: oklch(0.65 0.20 145 / 0.18); color: oklch(0.65 0.20 145); }
+.badge-amber    { background: oklch(0.78 0.18  75 / 0.18); color: oklch(0.72 0.18  75); }
+.badge-red      { background: oklch(0.58 0.24  25 / 0.18); color: oklch(0.68 0.22  25); }
+
+/* ══════════════════════════════════════════════════════════
+   Input
+══════════════════════════════════════════════════════════ */
+.input-field {
+  @apply block w-full px-4 py-3 rounded-xl text-sm transition-all duration-200;
+  background: var(--color-input);
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+}
+.input-field::placeholder { color: var(--color-muted-foreground); }
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px oklch(0.55 0.24 270 / 0.20);
+}
+
+/* ══════════════════════════════════════════════════════════
+   Kanban drag animations
+══════════════════════════════════════════════════════════ */
 .sortable-ghost {
-  opacity: 0.4;
-  @apply bg-primary/10 border-2 border-dashed border-primary;
+  opacity: 0.35;
+  background: oklch(0.55 0.24 270 / 0.08);
+  border: 2px dashed oklch(0.55 0.24 270 / 0.50);
+  border-radius: 0.875rem;
+}
+.sortable-chosen {
+  box-shadow: 0 20px 60px oklch(0.55 0.24 270 / 0.30);
+  transform: rotate(1.5deg) scale(1.03);
+  z-index: 50;
 }
 
-.sortable-chosen {
-  @apply shadow-xl rotate-2 scale-105;
+/* ══════════════════════════════════════════════════════════
+   Micro animations
+══════════════════════════════════════════════════════════ */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+.animate-fade-up { animation: fade-up 0.35s ease both; }
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.55 0.24 270 / 0.40); }
+  50%       { box-shadow: 0 0 0 8px oklch(0.55 0.24 270 / 0.00); }
+}
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
