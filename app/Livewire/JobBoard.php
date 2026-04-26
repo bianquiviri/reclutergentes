@@ -13,12 +13,23 @@ class JobBoard extends Component
     public $search = '';
     public $category = '';
     public $workMode = '';
+    public $selectedOffer = null;
 
     protected $updatesQueryString = ['search', 'category', 'workMode'];
 
     public function updatingSearch()
     {
         $this->resetPage();
+    }
+
+    public function showOffer($id)
+    {
+        $this->selectedOffer = JobOffer::find($id);
+    }
+
+    public function closeOffer()
+    {
+        $this->selectedOffer = null;
     }
 
     public function render()

@@ -82,12 +82,12 @@
                                 <span class="px-2 py-1 bg-muted text-muted-foreground text-[10px] uppercase font-bold rounded">Laravel</span>
                                 <span class="px-2 py-1 bg-muted text-muted-foreground text-[10px] uppercase font-bold rounded">Cybersec</span>
                             </div>
-                            <a href="#" class="inline-flex items-center text-sm font-semibold text-primary hover:underline">
-                                Apply Now
+                            <button wire:click="showOffer({{ $offer->id }})" class="inline-flex items-center text-sm font-semibold text-primary hover:underline focus:outline-none">
+                                Ver Oferta
                                 <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 @endforeach
@@ -98,4 +98,54 @@
             </div>
         </div>
     </div>
+    <!-- Modal for Offer Details -->
+    @if($selectedOffer)
+        <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+            <!-- Backdrop -->
+            <div class="fixed inset-0 bg-background/80 backdrop-blur-sm transition-opacity" wire:click="closeOffer"></div>
+
+            <!-- Modal Content -->
+            <div class="relative bg-card border border-border rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-fade-up">
+                
+                <div class="px-6 py-5 border-b border-border flex justify-between items-center bg-surface">
+                    <h2 class="text-xl font-bold text-foreground">Detalles de la Oferta</h2>
+                    <button wire:click="closeOffer" class="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="p-6 overflow-y-auto flex-1">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-extrabold text-foreground mb-2">
+                            {{ $selectedOffer->getTranslation('title', app()->getLocale()) }}
+                        </h3>
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <span class="badge badge-primary">{{ $selectedOffer->location }}</span>
+                            <span class="badge badge-teal">{{ $selectedOffer->salary_range }}</span>
+                            <span class="badge badge-emerald capitalize">{{ $selectedOffer->status }}</span>
+                        </div>
+                    </div>
+
+                    <div class="prose prose-sm dark:prose-invert max-w-none text-muted-foreground">
+                        <p class="whitespace-pre-line leading-relaxed">{{ $selectedOffer->getTranslation('description', app()->getLocale()) }}</p>
+                    </div>
+                </div>
+
+                <div class="px-6 py-5 border-t border-border flex justify-end gap-3 bg-surface">
+                    <button wire:click="closeOffer" class="px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors border border-border hover:bg-muted" style="color:var(--color-foreground);">
+                        Cerrar
+                    </button>
+                    <!-- Redirect to login since this is public facing right now -->
+                    <a href="/login" class="btn-primary">
+                        Aplicar a esta vacante
+                        <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
