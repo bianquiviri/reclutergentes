@@ -29,8 +29,8 @@ class JobOfferFactory extends Factory
                 'es' => $this->faker->randomElement($titlesEs),
             ],
             'description' => [
-                'en' => $this->faker->paragraph(3),
-                'es' => $this->faker->paragraph(3),
+                'en' => "Role Overview\n\n" . $this->faker->paragraphs(4, true) . "\n\nKey Responsibilities\n\n- " . implode("\n- ", $this->faker->sentences(5)) . "\n\nRequirements & Skills\n\n" . $this->faker->paragraphs(3, true),
+                'es' => "Resumen del Puesto\n\n" . $this->faker->paragraphs(4, true) . "\n\nResponsabilidades Clave\n\n- " . implode("\n- ", $this->faker->sentences(5)) . "\n\nRequisitos y Habilidades\n\n" . $this->faker->paragraphs(3, true),
             ],
             'location' => $this->faker->randomElement($locations),
             'salary_range' => $this->faker->randomElement($salaries),
