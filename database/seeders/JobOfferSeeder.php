@@ -9,6 +9,9 @@ class JobOfferSeeder extends Seeder
 {
     public function run(): void
     {
+        $admin = \App\Models\User::first();
+        if (!$admin) return;
+
         $offers = [
             [
                 'title' => ['en' => 'Senior Laravel Developer', 'es' => 'Desarrollador Laravel Senior'],
@@ -34,7 +37,12 @@ class JobOfferSeeder extends Seeder
         ];
 
         foreach ($offers as $offer) {
+            $offer['created_by'] = $admin->id;
             JobOffer::create($offer);
         }
+
+        JobOffer::factory()->count(300)->create([
+            'created_by' => $admin->id
+        ]);
     }
 }

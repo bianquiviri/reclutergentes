@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 use App\Livewire\KanbanBoard;
 
 Route::get('/', function () {
@@ -10,6 +11,9 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
+
+Route::post('/login', [LoginController::class, 'authenticate']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/register', function () {
     return view('auth.register');

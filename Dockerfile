@@ -19,6 +19,9 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl
 
+# Install phpredis extension
+RUN pecl install redis && docker-php-ext-enable redis
+
 # Generate locales
 RUN sed -i -e 's/# es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen \
     && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \

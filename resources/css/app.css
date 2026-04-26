@@ -1,61 +1,29 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 260 100% 99%; /* #fbf8ff */
-    --foreground: 232 20% 15%; /* #2e3145 */
-    
-    --card: 0 0% 100%;
-    --card-foreground: 232 20% 15%;
-    
-    --popover: 260 100% 99%;
-    --popover-foreground: 232 20% 15%;
-    
-    --primary: 240 2% 37%; /* #5f5e61 */
-    --primary-foreground: 260 20% 98%; /* #faf7fb */
-    
-    --secondary: 210 2% 37%; /* #5e5f60 */
-    --secondary-foreground: 240 5% 98%; /* #f9f9fa */
-    
-    --muted: 250 30% 95%; /* #ececff */
-    --muted-foreground: 233 12% 41%; /* #5b5e74 */
-    
-    --accent: 250 30% 95%;
-    --accent-foreground: 232 20% 15%;
-    
-    --destructive: 350 43% 43%; /* #9e3f4e */
-    --destructive-foreground: 260 20% 98%;
-    
-    --border: 233 12% 41%; /* using outline_variant or similar */
-    --input: 233 12% 41%;
-    --ring: 240 2% 37%;
-    
-    --radius: 0.375rem;
-  }
-
-  .dark {
-    --background: 240 10% 4%; /* Zinc 950 */
-    --foreground: 0 0% 98%;
-    --card: 240 10% 4%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 4%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-  }
+@theme {
+  --color-background: oklch(0.98 0.01 260);
+  --color-foreground: oklch(0.2 0.02 232);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.2 0.02 232);
+  --color-popover: oklch(0.98 0.01 260);
+  --color-popover-foreground: oklch(0.2 0.02 232);
+  --color-primary: oklch(0.45 0.01 240);
+  --color-primary-foreground: oklch(0.98 0.01 260);
+  --color-secondary: oklch(0.45 0.01 210);
+  --color-secondary-foreground: oklch(0.98 0.01 240);
+  --color-muted: oklch(0.95 0.02 250);
+  --color-muted-foreground: oklch(0.45 0.02 233);
+  --color-accent: oklch(0.95 0.02 250);
+  --color-accent-foreground: oklch(0.2 0.02 232);
+  --color-destructive: oklch(0.5 0.05 350);
+  --color-destructive-foreground: oklch(0.98 0.01 260);
+  --color-border: oklch(0.45 0.02 233);
+  --color-input: oklch(0.45 0.02 233);
+  --color-ring: oklch(0.45 0.01 240);
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
 }
 
 @layer base {

@@ -7,10 +7,14 @@ use Illuminate\Support\Facades\App;
 
 class JobOffer extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+
     protected $fillable = [
         'title',
         'description',
         'requirements',
+        'location',
+        'salary_range',
         'status',
         'created_by',
     ];
@@ -22,12 +26,26 @@ class JobOffer extends Model
     ];
 
     /**
+     * Get translation for a JSON field.
+     */
+    public function getTranslation($field, $locale = null)
+    {
+        $locale = $locale ?: App::getLocale();
+        $translations = $this->getAttribute($field);
+
+        if (!is_array($translations)) {
+            return $translations;
+        }
+
+        return $translations[$locale] ?? $translations[config('app.fallback_locale')] ?? '';
+    }
+
+    /**
      * Get the translated title.
      */
     public function getTranslatedTitleAttribute()
     {
-        $locale = App::getLocale();
-        return $this->title[$locale] ?? $this->title[config('app.fallback_locale')] ?? '';
+        return $this->getTranslation('title');
     }
 
     /**
@@ -35,8 +53,7 @@ class JobOffer extends Model
      */
     public function getTranslatedDescriptionAttribute()
     {
-        $locale = App::getLocale();
-        return $this->description[$locale] ?? $this->description[config('app.fallback_locale')] ?? '';
+        return $this->getTranslation('description');
     }
 
     public function applications()
